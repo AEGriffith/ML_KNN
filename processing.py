@@ -3,6 +3,7 @@ Imports
 """
 import pandas as pd
 import numpy as np
+import sklearn.preprocessing as skprep
 
 """
 Data Setup Functions
@@ -41,4 +42,18 @@ Data Preprocessing
 """
 
 
+# MinMaxNormalization
+def min_max_norm(data):
+    scalar = skprep.MinMaxScaler()
+    normalized_data = scalar.fit_transform(data)
+
+    return normalized_data
+
+
+# Z-score Normalization
+def z_score_norm(data):
+    scalar = skprep.StandardScaler()
+    normalized_data = scalar.fit_transform(data)
+
+    return normalized_data
 
