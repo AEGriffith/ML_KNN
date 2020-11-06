@@ -4,6 +4,8 @@ Imports
 import pandas as pd
 import numpy as np
 import sklearn.preprocessing as skprep
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.pipeline import make_pipeline
 
 """
 Data Setup Functions
@@ -19,7 +21,7 @@ str = 'labels'):
     :param sep: separator character. Default is tab.
     :param data_label: name for saved numpy array for data
     :param label_label: name for saved numpy array for labels
-    :return: two numpy arrays in the order data, labels
+    :return: full dataframe and two numpy arrays in the order data, labels
     """
     # read file into dataframe
     # the seeds_dataset.txt has no headers
@@ -29,12 +31,7 @@ str = 'labels'):
     data = df[range1].to_numpy()
     label = df[range2].to_numpy()
 
-    # save the numpy arrays
-    np.save('files/' + data_label + '.npy', data)
-    np.save('files/' + label_label + '.npy', label)
-
-    # return numpy arrays
-    return data, label
+    return df, data, label
 
 
 """
@@ -42,18 +39,23 @@ Data Preprocessing
 """
 
 
-# MinMaxNormalization
-def min_max_norm(data):
+# MinMax Pipeline
+def min_max_knn(x, y, k, weight, algorithm, metric):
     scalar = skprep.MinMaxScaler()
-    normalized_data = scalar.fit_transform(data)
+    pipeline = make_pipeline(scalar, KNeighborsClassifier(n_neighbors=k, weights=weight, algorithm=algorithm, metric=metric))
+    pipeline.fit(x, y)
 
-    return normalized_data
+    return pipeline
 
 
-# Z-score Normalization
-def z_score_norm(data):
+# Z-score Pipeline
+def z_score_knn(x, y, k, weight, algorithm, metric):
     scalar = skprep.StandardScaler()
-    normalized_data = scalar.fit_transform(data)
+    pipeline = make_pipeline(scalar, KNeighborsClassifier(k, weight, algorithm, metric))
+    pipeline.fit(x, y)
 
-    return normalized_data
+    return pipeline
 
+"""
+Data Validation
+"""
