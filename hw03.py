@@ -47,11 +47,6 @@ seeds_df, seed_data, seed_labels = prep.data_import(seed_filename, seed_data_ran
 """
 Data Visualization
 """
-# get different classes
-x1 = seeds_df[seeds_df[7] == 1]
-x2 = seeds_df[seeds_df[7] == 2]
-x3 = seeds_df[seeds_df[7] == 3]
-
 # Plot features
 fig, axes = plt.subplots(ncols=3, nrows=3)
 axes = axes.flatten()
